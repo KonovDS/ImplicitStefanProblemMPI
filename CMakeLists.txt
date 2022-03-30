@@ -3,15 +3,15 @@ project(ImplicitStefanProblemMPI)
 
 set(CMAKE_CXX_STANDARD 17)
 
-#set(HEADER_FILES
-#        mesh.h
-#        )
+set(HEADER_FILES
+        ui.h
+        )
 
 set(SOURCE_FILES
         main.cpp
-        )
-#                                                      ${HEADER_FILES}
-add_executable(ImplicitStefanProblemMPI ${SOURCE_FILES})
+        ui.cpp)
+
+add_executable(ImplicitStefanProblemMPI ${SOURCE_FILES} ${HEADER_FILES})
 
 include_directories(mesh)
 add_subdirectory(mesh)
