@@ -26,7 +26,11 @@ include_directories(basic_parabolic)
 add_subdirectory(basic_parabolic)
 target_link_libraries(ImplicitStefanProblemMPI basic_parabolic)
 
+include_directories(utils)
+add_subdirectory(utils)
+target_link_libraries(ImplicitStefanProblemMPI utils)
 
+# Tests
 add_subdirectory(tests)
 
 # OpenMP

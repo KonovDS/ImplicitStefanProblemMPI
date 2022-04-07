@@ -6,7 +6,7 @@
 #include <mpi.h>
 #include <omp.h>
 
-#include "lib/print.h"
+#include "print.h"
 
 TEST_CASE("OpenMP basic test", "[omp]") {
   Print("[OpenMP basic test] ", "OPENMP version = ", _OPENMP);

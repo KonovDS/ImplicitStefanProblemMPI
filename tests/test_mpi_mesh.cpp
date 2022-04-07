@@ -6,7 +6,7 @@
 
 #include <string>
 
-#include "lib/print.h"
+#include "print.h"
 
 TEST_CASE("MPI mesh test", "[mpi][mpi_mesh]") {
   // Get the number of processes

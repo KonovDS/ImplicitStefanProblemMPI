@@ -1,27 +1,29 @@
-#ifndef IMPLICITSTEFANPROBLEMMPI_TESTS_PRINT_H_
-#define IMPLICITSTEFANPROBLEMMPI_TESTS_PRINT_H_
+#ifndef IMPLICITSTEFANPROBLEMMPI_UTILS_PRINT_H_
+#define IMPLICITSTEFANPROBLEMMPI_UTILS_PRINT_H_
 
 #include <mpi.h>
 
 #include <iostream>
 #include <string>
 
-template <class T, class = std::enable_if_t<(std::is_same_v<T, const char>)>>
-std::string ToStr(T *x) {
+#include "utils.h"
+
+// Won't work unless inlined((
+inline std::string ToStr(const char *x) {
   return std::string(x);
 }
 
-template <class T, class = std::enable_if_t<(std::is_same_v<T, int>)>>
-std::string ToStr(T x) {
+inline std::string ToStr(int x) {
+  return std::to_string(x);
+}
+
+inline std::string ToStr(double x) {
   return std::to_string(x);
 }
 
 template <class... Args>
 void Print(Args... args) {
-  int world_rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-
-  if (world_rank == 0) {
+  if (IsMainMPINode()) {
     std::string str = (ToStr(args) + ...) + "\n";
     std::cout << str;
   }
@@ -36,5 +38,4 @@ void PrintAll(Args... args) {
   std::cout << str;
 }
 
-
-#endif //IMPLICITSTEFANPROBLEMMPI_TESTS_PRINT_H_
+#endif //IMPLICITSTEFANPROBLEMMPI_UTILS_PRINT_H_
