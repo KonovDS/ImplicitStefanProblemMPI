@@ -36,7 +36,7 @@ class BasicParabolic {
   }
 
   void Compute(size_t steps) {
-    for (int i = 0; i < steps; i++) {
+    for (size_t i = 0; i < steps; i++) {
       Step();
     }
   }
@@ -51,18 +51,18 @@ class BasicParabolic {
 
   void Border() {
     if (before.IsLeftBorder()) {
-      for (int j = 0; j < before.DimL(); j++) {
+      for (size_t j = 0; j < before.DimL(); j++) {
         before.LeftPtrRecv()[j] = left(j);
       }
     }
-    for (int i = 0; i < before.DimK(); i++) {
+    for (size_t i = 0; i < before.DimK(); i++) {
       before.At(i, 0) = top(before.GlobalI(i));
     }
-    for (int i = 0; i < before.DimK(); i++) {
+    for (size_t i = 0; i < before.DimK(); i++) {
       before.At(i, before.DimL() - 1) = bottom(before.GlobalI(i));
     }
     if (before.IsRightBorder()) {
-      for (int j = 0; j < before.DimL(); j++) {
+      for (size_t j = 0; j < before.DimL(); j++) {
         before.RightPtrRecv()[j] = right(j);
       }
     }
