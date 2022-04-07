@@ -12,6 +12,10 @@ set(SOURCE_FILES
 
 add_library(mesh STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
+# OpenMP
+find_package(OpenMP REQUIRED)
+target_link_libraries(mesh OpenMP::OpenMP_CXX)
+
+# MPI
 find_package(MPI REQUIRED)
-target_link_libraries(mesh ${MPI_C_LIBRARIES})
-include_directories("C:\\Program Files\\MPICH2\\include\\")
+target_link_libraries(mesh MPI::MPI_CXX)

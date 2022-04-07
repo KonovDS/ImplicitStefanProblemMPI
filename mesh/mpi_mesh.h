@@ -6,6 +6,7 @@
 #include <mpi.h>
 
 #include <stdexcept>
+#include <iostream>
 
 class NoMPIException : std::exception {
   const char * what() const noexcept override {
@@ -27,19 +28,19 @@ class MPISendError : std::exception {
 
 template<class T>
 class MPIMesh : public Mesh<T> {
-  int world_rank_, world_size_;
+  int rank_, world_size_;
  public:
-  MPIMesh(int individual_k, int l) : Mesh<T>(individual_k, l) {
+  MPIMesh(int individual_k, int l) : Mesh<T>(individual_k, l) { //NOLINT
     if (MPI_Comm_size(MPI_COMM_WORLD, &world_size_) != MPI_SUCCESS)
       throw NoMPIException();
-    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank_);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank_);
   }
 
   inline void SendLeft() {
     auto d = this->LeftPtrSend();
     auto size = this->BorderLen() * sizeof(T);
-    auto tag = world_rank_;
-    auto dest = world_rank_ - 1;
+    auto tag = 0;
+    auto dest = rank_ - 1;
     if (MPI_Send((void *)d, size, MPI_BYTE, dest, tag, MPI_COMM_WORLD) != MPI_SUCCESS)
       throw MPISendError();
   }
@@ -47,8 +48,8 @@ class MPIMesh : public Mesh<T> {
   inline void SendRight() {
     auto d = this->RightPtrSend();
     auto size = this->BorderLen() * sizeof(T);
-    auto tag = world_rank_;
-    auto dest = world_rank_ + 1;
+    auto tag = 0;
+    auto dest = rank_ + 1;
     if (MPI_Send((void *)d, size, MPI_BYTE, dest, tag, MPI_COMM_WORLD) != MPI_SUCCESS)
       throw MPISendError();
   }
@@ -56,21 +57,33 @@ class MPIMesh : public Mesh<T> {
   inline void RecvLeft() {
     auto d = this->LeftPtrRecv();
     auto size = this->BorderLen() * sizeof(T);
-    auto tag = world_rank_;
-    auto src = world_rank_ - 1;
+    auto tag = MPI_ANY_TAG;
+    auto src = rank_ - 1;
     MPI_Status status;
     if (MPI_Recv((void *)d, size, MPI_BYTE, src, tag, MPI_COMM_WORLD, &status) != MPI_SUCCESS)
       throw MPIRecvError();
   }
 
   inline void RecvRight() {
-    auto d = this->LeftPtrRecv();
+    auto d = this->RightPtrRecv();
     auto size = this->BorderLen() * sizeof(T);
-    auto tag = world_rank_;
-    auto src = world_rank_ + 1;
+    auto tag = MPI_ANY_TAG;
+    auto src = rank_ + 1;
     MPI_Status status;
     if (MPI_Recv((void *)d, size, MPI_BYTE, src, tag, MPI_COMM_WORLD, &status) != MPI_SUCCESS)
       throw MPIRecvError();
+  }
+
+  inline void Update() {
+    if (rank_ != world_size_ - 1) {
+      SendRight();
+      RecvRight();
+    }
+    if (rank_ != 0) {
+      SendLeft();
+      RecvLeft();
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
   }
 };
 
