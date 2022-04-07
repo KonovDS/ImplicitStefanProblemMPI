@@ -4,6 +4,8 @@
 #include <iostream>
 #include <mpi.h>
 
+// https://stackoverflow.com/a/62537883/10096003
+
 class MPI_Init_H {
  public:
   /* constructor initialises MPI */
