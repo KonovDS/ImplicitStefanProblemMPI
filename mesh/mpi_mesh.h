@@ -93,6 +93,10 @@ class MPIMesh : public Mesh<T> {
   bool IsRightBorder() {
     return rank_ == world_size_ - 1;
   }
+
+  size_t GlobalI(size_t i) {
+    return world_size_ * (this->DimK() - 1) + i;
+  }
 };
 
 #endif //IMPLICITSTEFANPROBLEMMPI_MESH_MPI_MESH_H_

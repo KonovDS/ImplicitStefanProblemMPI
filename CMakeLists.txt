@@ -13,7 +13,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 set(SOURCE_FILES
         main.cpp
-        )
+   )
 
 # ${HEADER_FILES}
 add_executable(ImplicitStefanProblemMPI ${SOURCE_FILES} )
@@ -21,6 +21,11 @@ add_executable(ImplicitStefanProblemMPI ${SOURCE_FILES} )
 include_directories(mesh)
 add_subdirectory(mesh)
 target_link_libraries(ImplicitStefanProblemMPI mesh)
+
+include_directories(basic_parabolic)
+add_subdirectory(basic_parabolic)
+target_link_libraries(ImplicitStefanProblemMPI basic_parabolic)
+
 
 add_subdirectory(tests)
 

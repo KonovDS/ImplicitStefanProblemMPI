@@ -39,6 +39,14 @@ class Mesh {
   size_t BorderLen() const {
     return dim_l;
   }
+
+  size_t DimL() const {
+    return dim_l;
+  }
+
+  size_t DimK() const {
+    return dim_k;
+  }
 };
 
 #endif //IMPLICITSTEFANPROBLEMMPI_MESH_MESH_H_
