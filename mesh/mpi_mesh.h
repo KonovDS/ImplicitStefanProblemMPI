@@ -85,6 +85,14 @@ class MPIMesh : public Mesh<T> {
     }
     MPI_Barrier(MPI_COMM_WORLD);
   }
+
+  bool IsLeftBorder() {
+    return rank_ == 0;
+  }
+
+  bool IsRightBorder() {
+    return rank_ == world_size_ - 1;
+  }
 };
 
 #endif //IMPLICITSTEFANPROBLEMMPI_MESH_MPI_MESH_H_
