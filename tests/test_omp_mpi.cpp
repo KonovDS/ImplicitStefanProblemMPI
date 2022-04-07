@@ -1,12 +1,12 @@
 #define CATCH_CONFIG_FAST_COMPILE
-#include "catch.hpp"
+#include "lib/catch.hpp"
 
 #include <iostream>
 
 #include <mpi.h>
 #include <omp.h>
 
-#include "print.h"
+#include "lib/print.h"
 
 TEST_CASE("OpenMP basic test", "[omp]") {
   Print("[OpenMP basic test] ", "OPENMP version = ", _OPENMP);

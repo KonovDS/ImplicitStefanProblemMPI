@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_FAST_COMPILE
-#include "catch.hpp"
+#include "lib/catch.hpp"
 #include "mesh.h"
 
 auto Setup(int width, int height) {

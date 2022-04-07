@@ -1,12 +1,12 @@
 #define CATCH_CONFIG_FAST_COMPILE
-#include "catch.hpp"
+#include "lib/catch.hpp"
 #include "mpi_mesh.h"
 
 #include <mpi.h>
 
 #include <string>
 
-#include "print.h"
+#include "lib/print.h"
 
 TEST_CASE("MPI mesh test", "[mpi][mpi_mesh]") {
   // Get the number of processes
