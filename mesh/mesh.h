@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IMPLICITSTEFANPROBLEMMPI_MESH_MESH_H_
+#define IMPLICITSTEFANPROBLEMMPI_MESH_MESH_H_
 #include <iostream>
 
 #include <vector>
@@ -15,27 +16,29 @@ class Mesh {
   Mesh &operator=(Mesh &&rhs) noexcept = default;
   Mesh() = delete;
 
-  T &at(size_t k, size_t l) {
+  T &At(size_t k, size_t l) {
     return data[k * dim_l + l];
   }
 
   T *LeftPtrRecv() {
-    return &(data[0]);
+    return &At(0, 0);
   }
 
   T *LeftPtrSend() {
-    return &(data[dim_l]);
+    return &At(1, 0);
   }
 
   T *RightPtrRecv() {
-    return &(data[(dim_k - 1) * dim_l]);
+    return &At(dim_k - 1, 0);
   }
 
   T *RightPtrSend() {
-    return &(data[(dim_k - 2) * dim_l]);
+    return &At(dim_k - 2, 0);
   }
 
   size_t BorderLen() const {
     return dim_l;
   }
 };
+
+#endif //IMPLICITSTEFANPROBLEMMPI_MESH_MESH_H_

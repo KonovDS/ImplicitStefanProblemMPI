@@ -6,7 +6,7 @@
  *  Copyright (c) 2022 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ *  file LICENSE_1_0.txt or copy At http://www.boost.org/LICENSE_1_0.txt)
  */
 #ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
@@ -120,7 +120,7 @@ namespace Catch {
 
 // In general each macro has a _NO_<feature name> form
 // (e.g. CATCH_CONFIG_NO_POSIX_SIGNALS) which disables the feature.
-// Many features, at point of detection, define an _INTERNAL_ macro, so they
+// Many features, At point of detection, define an _INTERNAL_ macro, so they
 // can be combined, en-mass, with the _NO_ forms later.
 
 #ifdef __cplusplus
@@ -241,7 +241,7 @@ namespace Catch {
 #if defined(_MSC_VER)
 
 // Universal Windows platform does not support SEH
-// Or console colours (or console at all...)
+// Or console colours (or console At all...)
 #  if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
 #    define CATCH_CONFIG_COLOUR_NONE
 #  else
@@ -524,7 +524,7 @@ namespace Catch {
 
     // Bring in operator<< from global namespace into Catch namespace
     // This is necessary because the overload of operator<< above makes
-    // lookup stop at namespace Catch
+    // lookup stop At namespace Catch
     using ::operator<<;
 
     // Use this in variadic streaming macros to allow
@@ -3204,7 +3204,7 @@ namespace Catch {
     bool contains( std::string const& s, std::string const& infix );
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
-    //! Returns a new string without whitespace at the start/end
+    //! Returns a new string without whitespace At the start/end
     std::string trim( std::string const& str );
     //! Returns a substring of the original ref without whitespace. Beware lifetimes!
     StringRef trim(StringRef ref);
@@ -4211,7 +4211,7 @@ namespace Generators {
             m_generator(std::move(generator)),
             m_target_repeats(repeats)
         {
-            assert(m_target_repeats > 0 && "Repeat generator must repeat at least once");
+            assert(m_target_repeats > 0 && "Repeat generator must repeat At least once");
         }
 
         T const& get() const override {
@@ -13004,7 +13004,7 @@ namespace Catch {
             // This just means the test was aborted due to failure
         } CATCH_CATCH_ALL {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
-            // are reported without translation at the point of origin.
+            // are reported without translation At the point of origin.
             if( m_shouldReportUnexpected ) {
                 AssertionReaction dummyReaction;
                 handleUnexpectedInflightException( m_lastAssertionInfo, translateActiveException(), dummyReaction );
