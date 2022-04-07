@@ -18,9 +18,7 @@ TEST_CASE("MPI mesh test", "[mpi][mpi_mesh]") {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
   int kSize = 10;
-  MPI_Barrier(MPI_COMM_WORLD);
   MPIMesh<int> m(kSize, kSize);
-  MPI_Barrier(MPI_COMM_WORLD);
   for (int i = 0; i < kSize; i++) {
     for (int j = 0; i < kSize; i++) {
       m.At(i, j) = world_rank;
