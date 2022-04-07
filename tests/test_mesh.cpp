@@ -3,7 +3,7 @@
 #include "mesh.h"
 
 auto Setup(int width, int height) {
-  Mesh<int> mesh(width, height);
+  Mesh<size_t> mesh(width, height);
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
       mesh.At(i, j) = height * i + j;
@@ -71,7 +71,7 @@ TEST_CASE("Mesh left values test", "[mesh][mesh_values]") {
     int width = 100, height = 100;
     auto mesh = Setup(width, height);
     bool ok = true;
-    for (int i = 0; i < mesh.BorderLen(); i++) {
+    for (size_t i = 0; i < mesh.BorderLen(); i++) {
       if (mesh.LeftPtrRecv()[i] != i) {
         ok = false;
         break;
@@ -83,7 +83,7 @@ TEST_CASE("Mesh left values test", "[mesh][mesh_values]") {
     int width = 10, height = 100;
     auto mesh = Setup(width, height);
     bool ok = true;
-    for (int i = 0; i < mesh.BorderLen(); i++) {
+    for (size_t i = 0; i < mesh.BorderLen(); i++) {
       if (mesh.LeftPtrRecv()[i] != i) {
         ok = false;
         break;
@@ -95,7 +95,7 @@ TEST_CASE("Mesh left values test", "[mesh][mesh_values]") {
     int width = 100, height = 10;
     auto mesh = Setup(width, height);
     bool ok = true;
-    for (int i = 0; i < mesh.BorderLen(); i++) {
+    for (size_t i = 0; i < mesh.BorderLen(); i++) {
       if (mesh.LeftPtrRecv()[i] != i) {
         ok = false;
         break;
@@ -110,7 +110,7 @@ TEST_CASE("Mesh right values test", "[mesh][mesh_values]") {
     int width = 100, height = 100;
     auto mesh = Setup(width, height);
     bool ok = true;
-    for (int i = 0; i < mesh.BorderLen(); i++) {
+    for (size_t i = 0; i < mesh.BorderLen(); i++) {
       if (mesh.RightPtrRecv()[i] != (width - 1) * height + i) {
         ok = false;
         break;
@@ -122,7 +122,7 @@ TEST_CASE("Mesh right values test", "[mesh][mesh_values]") {
     int width = 10, height = 100;
     auto mesh = Setup(width, height);
     bool ok = true;
-    for (int i = 0; i < mesh.BorderLen(); i++) {
+    for (size_t i = 0; i < mesh.BorderLen(); i++) {
       if (mesh.RightPtrRecv()[i] != (width - 1) * height + i) {
         ok = false;
         break;
@@ -134,7 +134,7 @@ TEST_CASE("Mesh right values test", "[mesh][mesh_values]") {
     int width = 100, height = 10;
     auto mesh = Setup(width, height);
     bool ok = true;
-    for (int i = 0; i < mesh.BorderLen(); i++) {
+    for (size_t i = 0; i < mesh.BorderLen(); i++) {
       if (mesh.RightPtrRecv()[i] != (width - 1) * height + i) {
         ok = false;
         break;

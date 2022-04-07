@@ -6,8 +6,8 @@
 
 template <class T>
 class Mesh {
-  size_t dim_k, dim_l;
   std::vector<T> data;
+  size_t dim_k, dim_l;
  public:
   Mesh(size_t k, size_t l) : data(k*l), dim_k(k), dim_l(l) {}
   Mesh(const Mesh &rhs) = default;

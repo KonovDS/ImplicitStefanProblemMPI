@@ -30,7 +30,7 @@ template<class T>
 class MPIMesh : public Mesh<T> {
   int rank_, world_size_;
  public:
-  MPIMesh(int individual_k, int l) : Mesh<T>(individual_k, l) { //NOLINT
+  MPIMesh(size_t individual_k, size_t l) : Mesh<T>(individual_k, l) { //NOLINT
     if (MPI_Comm_size(MPI_COMM_WORLD, &world_size_) != MPI_SUCCESS)
       throw NoMPIException();
     MPI_Comm_rank(MPI_COMM_WORLD, &rank_);

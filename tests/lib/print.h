@@ -23,7 +23,7 @@ void Print(Args... args) {
 
   if (world_rank == 0) {
     std::string str = (ToStr(args) + ...) + "\n";
-    std::cerr << str;
+    std::cout << str;
   }
 }
 
@@ -33,7 +33,7 @@ void PrintAll(Args... args) {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
   std::string str = "[" + std::to_string(world_rank) + "]" + (ToStr(args) + ...) + "\n";
-  std::cerr << str;
+  std::cout << str;
 }
 
 
