@@ -3,17 +3,17 @@ project(ImplicitStefanProblemMPI)
 
 set(CMAKE_CXX_STANDARD 17)
 
-                                     # -pedantic -lm -O3 -funroll-loops
+# -pedantic -lm -O3 -funroll-loops
 set(GCC_COVERAGE_COMPILE_FLAGS "-Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
-set(HEADER_FILES
-        ui.h
-        )
+#set(HEADER_FILES
+
+#)
 
 set(SOURCE_FILES
         main.cpp
-        ui.cpp)
+        )
 
 # ${HEADER_FILES}
 add_executable(ImplicitStefanProblemMPI ${SOURCE_FILES} )
