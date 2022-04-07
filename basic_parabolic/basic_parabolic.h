@@ -3,73 +3,60 @@
 
 #include "mpi_mesh.h"
 
+#include <stdexcept>
+#include <cmath>
+
+class IncompleteTask : std::exception {
+ public:
+  const char * what() const noexcept override {
+    return "Unable to launch BasicParabolic Task with incomplete settings.";
+  }
+};
+
 class BasicParabolic {
   MPIMesh<double> before, after;
   double a, tau, h_x, h_y;
+  struct {
+    double (*l)(size_t j, const MPIMesh<double> &b) = nullptr;
+    double (*r)(size_t j, const MPIMesh<double> &b) = nullptr;
+    double (*t)(size_t global_i, const MPIMesh<double> &b) = nullptr;
+    double (*b)(size_t global_i, const MPIMesh<double> &b) = nullptr;
+  } borders;
 
-  double (*left)(size_t j);
-  double (*right)(size_t j);
-  double (*top)(size_t global_i);
-  double (*bottom)(size_t global_i);
-
-  void ExplicitScheme(size_t i, size_t j) {
-    after.At(i, j) = before.At(i, j) + a * tau *
-        (before.At(i - 1, j) - 2 * before.At(i, j) + before.At(i + 1, j))
-        / (h_x * h_x) + a * tau *
-        (before.At(i, j - 1) - 2 * before.At(i, j) + before.At(i, j + 1))
-        / (h_y * h_y);
-  }
-
-  void Step() {
-    for (size_t i = 1; i < before.DimK() - 1; i++) {
-      for (size_t j = 1; j < before.DimL() - 1; j++) {
-        ExplicitScheme(i, j);
-      }
-    }
-    after.Update();
-    std::swap(before, after);
-    Border();
-  }
-
-  static double AutoTau(double h, double a) {
+  void ExplicitScheme(size_t i, size_t j);
+  void Step();
+  void Compute(size_t steps);
+  void Border();
+  inline static double AutoTau(double h, double a) {
     return h * h / (2 * a);
   }
 
-  void Compute(size_t steps) {
-    for (size_t i = 0; i < steps; i++) {
-      Step();
-    }
-  }
-
-  void SetupInitial(double (*f)(size_t global_i, size_t j)) {
-    for (size_t i = 0; i < before.DimK(); i++) {
-      for (size_t j = 0; j < before.DimL(); j++) {
-        before.At(i, j) = f(before.GlobalI(i), j);
-      }
-    }
-  }
-
-  void Border() {
-    if (before.IsLeftBorder()) {
-      for (size_t j = 0; j < before.DimL(); j++) {
-        before.LeftPtrRecv()[j] = left(j);
-      }
-    }
-    for (size_t i = 0; i < before.DimK(); i++) {
-      before.At(i, 0) = top(before.GlobalI(i));
-    }
-    for (size_t i = 0; i < before.DimK(); i++) {
-      before.At(i, before.DimL() - 1) = bottom(before.GlobalI(i));
-    }
-    if (before.IsRightBorder()) {
-      for (size_t j = 0; j < before.DimL(); j++) {
-        before.RightPtrRecv()[j] = right(j);
-      }
-    }
-  }
-
  public:
-  //BasicParabolic(size_t individual_k, size_t l);
+  BasicParabolic(size_t individual_k, size_t l,
+                 double h_x, double h_y,
+                 double a) :
+                 before(individual_k, l), after(individual_k, l) {
+    this->a = a;
+    this->tau = 0;
+    this->h_x = h_x;
+    this->h_y = h_y;
+  }
+  void Run(double t);
+  void Run(size_t s);
+  double SetupTau(double t = 0);
+  inline void SetupBorders(double (*l)(size_t j, const MPIMesh<double> &b),
+                    double (*r)(size_t j, const MPIMesh<double> &b),
+                    double (*t)(size_t global_i, const MPIMesh<double> &b),
+                    double (*b)(size_t global_i, const MPIMesh<double> &b)) {
+    borders.l = l;
+    borders.r = r;
+    borders.t = t;
+    borders.b = b;
+  }
+  void SetupInitial(double (*init)(size_t global_i, size_t j));
+  double L2Partial(double (*f)(size_t global_i, size_t j));
+  double L0Partial(double (*f)(size_t global_i, size_t j));
+  void PrintOut();
 };
 
 #endif //IMPLICITSTEFANPROBLEMMPI_BASIC_PARABOLIC_BASIC_PARABOLIC_H_

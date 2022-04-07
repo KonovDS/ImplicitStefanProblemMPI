@@ -26,6 +26,12 @@ class MPISendError : std::exception {
   }
 };
 
+class MPISendLogicError : std::exception {
+  const char * what() const noexcept override {
+    return "Attempt sending to self rank";
+  }
+};
+
 template<class T>
 class MPIMesh : public Mesh<T> {
   int rank_, world_size_;
@@ -96,6 +102,19 @@ class MPIMesh : public Mesh<T> {
 
   size_t GlobalI(size_t i) {
     return world_size_ * (this->DimK() - 1) + i;
+  }
+
+  void CompleteSend(size_t rank) {
+    if (rank == rank_) {
+      auto d = &(this->At(0, 0));
+      auto size = this->dimK() * this->dimL() * sizeof(T);
+      auto tag = 0;
+      auto dest = rank;
+      if (MPI_Send((void *)d, size, MPI_BYTE, dest, tag, MPI_COMM_WORLD) != MPI_SUCCESS)
+        throw MPISendError();
+    } else {
+      throw MPISendLogicError();
+    }
   }
 };
 
