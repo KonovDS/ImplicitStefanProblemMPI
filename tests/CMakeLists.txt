@@ -5,7 +5,7 @@ set(TESTS_FILES
 )
 
 set(CATCH_HELPERS
-        lib/main.cpp
+        lib/catch_main.cpp
         lib/print.h
         lib/mpi_helpers.h
         )
