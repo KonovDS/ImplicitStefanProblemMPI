@@ -16,27 +16,17 @@ set(SOURCE_FILES
    )
 
 # ${HEADER_FILES}
-add_executable(ImplicitStefanProblemMPI ${SOURCE_FILES} )
+add_executable(ImplicitStefanProblemMPI ${SOURCE_FILES})
 
-include_directories(base)
+include_directories(base mesh basic_parabolic)
+
+# MPI OMP linking + Basic utilities
 add_subdirectory(base)
-target_link_libraries(ImplicitStefanProblemMPI base)
-
-include_directories(mesh)
+# Mesh template and MPI sync functions
 add_subdirectory(mesh)
-target_link_libraries(ImplicitStefanProblemMPI mesh)
-
-include_directories(basic_parabolic)
+# Basic parabolic task solver
 add_subdirectory(basic_parabolic)
-target_link_libraries(ImplicitStefanProblemMPI basic_parabolic)
-
 # Tests
 add_subdirectory(tests)
 
-# OpenMP
-find_package(OpenMP REQUIRED)
-target_link_libraries(ImplicitStefanProblemMPI OpenMP::OpenMP_CXX)
-
-# MPI
-find_package(MPI REQUIRED)
-target_link_libraries(ImplicitStefanProblemMPI MPI::MPI_CXX)
+target_link_libraries(ImplicitStefanProblemMPI PRIVATE base mesh basic_parabolic)

@@ -49,6 +49,7 @@ TEST_CASE("MPI basic test", "[mpi]") {
       CHECK(MPI_Recv(&data, 1, MPI_INT32_T, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status) == MPI_SUCCESS);
       CHECK(data == 13);
     }
+    Print("[MPI basic test] ","MPI functionality tested on ", world_size," nodes");
   } else {
     Print("[MPI basic test] ","Unable to test MPI functionality. Consider running MPI with -n 2 or more");
   }
