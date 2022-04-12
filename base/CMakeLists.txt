@@ -1,4 +1,4 @@
-project(utils)
+project(base)
 
 set(HEADER_FILES
         print.h
@@ -11,12 +11,9 @@ set(SOURCE_FILES
         )
 
 
-add_library(utils STATIC ${SOURCE_FILES} ${HEADER_FILES})
+add_library(base STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
-# OpenMP
+# MPI and OpenMP
 find_package(OpenMP REQUIRED)
-target_link_libraries(utils OpenMP::OpenMP_CXX)
-
-# MPI
 find_package(MPI REQUIRED)
-target_link_libraries(utils MPI::MPI_CXX)
+target_link_libraries(base OpenMP::OpenMP_CXX MPI::MPI_CXX)

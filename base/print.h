@@ -8,7 +8,7 @@
 
 #include "utils.h"
 
-// Won't work unless inlined((
+// Initializatoion in .h won't work unless inlined
 inline std::string ToStr(const char *x) {
   return std::string(x);
 }

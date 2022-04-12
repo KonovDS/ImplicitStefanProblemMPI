@@ -13,8 +13,7 @@ set(CATCH_HELPERS
 add_executable(Catch_tests_run ${CATCH_HELPERS} ${TESTS_FILES})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-target_link_libraries(Catch_tests_run mesh)
-target_link_libraries(Catch_tests_run utils)
+target_link_libraries(Catch_tests_run mesh base)
 
 # OpenMP
 find_package(OpenMP REQUIRED)

@@ -18,6 +18,10 @@ set(SOURCE_FILES
 # ${HEADER_FILES}
 add_executable(ImplicitStefanProblemMPI ${SOURCE_FILES} )
 
+include_directories(base)
+add_subdirectory(base)
+target_link_libraries(ImplicitStefanProblemMPI base)
+
 include_directories(mesh)
 add_subdirectory(mesh)
 target_link_libraries(ImplicitStefanProblemMPI mesh)
@@ -25,10 +29,6 @@ target_link_libraries(ImplicitStefanProblemMPI mesh)
 include_directories(basic_parabolic)
 add_subdirectory(basic_parabolic)
 target_link_libraries(ImplicitStefanProblemMPI basic_parabolic)
-
-include_directories(utils)
-add_subdirectory(utils)
-target_link_libraries(ImplicitStefanProblemMPI utils)
 
 # Tests
 add_subdirectory(tests)

@@ -13,7 +13,7 @@ add_library(basic_parabolic STATIC ${SOURCE_FILES} ${HEADER_FILES})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 target_link_libraries(basic_parabolic mesh)
-target_link_libraries(basic_parabolic utils)
+target_link_libraries(basic_parabolic base)
 
 # OpenMP
 find_package(OpenMP REQUIRED)

@@ -13,7 +13,7 @@ set(SOURCE_FILES
 add_library(mesh STATIC ${SOURCE_FILES} ${HEADER_FILES})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-target_link_libraries(mesh utils)
+target_link_libraries(mesh base)
 
 # OpenMP
 find_package(OpenMP REQUIRED)
