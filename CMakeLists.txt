@@ -5,11 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 # -funroll-loops
 # -mtune=native -funroll-loops -ffast-math -ftree-vectorize -ftree-vectorizer-verbose=0
-if (Debug)
+if (${CMAKE_BUILD_TYPE} STREQUAL Debug)
     set(COMPILE_FLAGS "-O0 -g -Wall")
 else()
     set(COMPILE_FLAGS "-O3 -Wall -Werror")
-endif(Debug)
+endif(${CMAKE_BUILD_TYPE} STREQUAL Debug)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_FLAGS}")
 
