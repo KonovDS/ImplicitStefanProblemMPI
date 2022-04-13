@@ -3,9 +3,15 @@ project(ImplicitStefanProblemMPI)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# -pedantic -lm -O3 -funroll-loops
-set(GCC_COVERAGE_COMPILE_FLAGS "-Wall")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+# -funroll-loops
+#
+if (Debug)
+    set(COMPILE_FLAGS "-O0 -g -Wall")
+else()
+    set(COMPILE_FLAGS "-O3 -Wall -Werror")
+endif(Debug)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_FLAGS}")
 
 #set(HEADER_FILES
 
@@ -26,7 +32,7 @@ add_subdirectory(base)
 add_subdirectory(mesh)
 # Basic parabolic task solver
 add_subdirectory(basic_parabolic)
-# Tests
+# Catch2 tests
 add_subdirectory(tests)
 
 target_link_libraries(ImplicitStefanProblemMPI PRIVATE base mesh basic_parabolic)
