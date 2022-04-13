@@ -1,5 +1,7 @@
 #include "basic_parabolic.h"
 
+#include <omp.h>
+
 void BasicParabolic::ExplicitScheme(size_t i, size_t j) {
   after.At(i, j) = before.At(i, j) + a * tau *
       (before.At(i - 1, j) - 2 * before.At(i, j) + before.At(i + 1, j))
@@ -10,6 +12,7 @@ void BasicParabolic::ExplicitScheme(size_t i, size_t j) {
 
 void BasicParabolic::Step() {
   Border();
+#pragma omp parallel for default(none)
   for (size_t i = 1; i < before.DimK() - 1; i++) {
     for (size_t j = 1; j < before.DimL() - 1; j++) {
       ExplicitScheme(i, j);
