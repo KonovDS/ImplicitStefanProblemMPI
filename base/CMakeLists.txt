@@ -4,11 +4,11 @@ set(HEADER_FILES
         print.h
         progress.h
         utils.h
-        )
+        timer.h)
 
 set(SOURCE_FILES
         utils.cpp
-        )
+        timer.cpp)
 
 
 add_library(base STATIC ${SOURCE_FILES} ${HEADER_FILES})

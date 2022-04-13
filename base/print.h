@@ -13,7 +13,15 @@ inline std::string ToStr(const char *x) {
   return std::string(x);
 }
 
+inline std::string ToStr(std::string x) {
+  return x;
+}
+
 inline std::string ToStr(int x) {
+  return std::to_string(x);
+}
+
+inline std::string ToStr(long int &x) {
   return std::to_string(x);
 }
 
