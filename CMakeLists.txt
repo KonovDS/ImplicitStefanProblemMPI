@@ -4,7 +4,7 @@ project(ImplicitStefanProblemMPI)
 set(CMAKE_CXX_STANDARD 17)
 
 # -funroll-loops
-#
+# -mtune=native -funroll-loops -ffast-math -ftree-vectorize -ftree-vectorizer-verbose=0
 if (Debug)
     set(COMPILE_FLAGS "-O0 -g -Wall")
 else()

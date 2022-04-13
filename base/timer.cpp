@@ -25,10 +25,12 @@ void Timer::Print() {
   auto prev = start;
   for (auto &i : points) {
     auto s = std::chrono::duration_cast<std::chrono::seconds>(i.first - prev);
-    ::Print("   ", s.count(), " s : ", i.second);
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(i.first - prev);
+    ::Print("   ", s.count(), ".", ms.count() % 1000, " s : ", i.second);
     prev = i.first;
   }
   auto s = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - start);
-  ::Print("Total = ", s.count(), " s");
+  auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+  ::Print("Total = ", s.count(), ".", ms.count() % 1000, " s");
   ::Print(line);
 }
