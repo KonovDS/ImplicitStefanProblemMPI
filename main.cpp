@@ -5,6 +5,9 @@
 #include "print.h"
 #include "timer.h"
 
+const double kH = 0.001;
+const double kTime = 0.1;
+
 template <class... Args>
 double zero(Args... args) {
   return 0;
@@ -15,51 +18,49 @@ double f(double x, double y, double t) {
 }
 
 double init(size_t i, size_t j) {
-  return f(i*0.01, j*0.01, 0);
-}
-
-double mid(size_t i, size_t j) {
-  return f(i*0.01, j*0.01, 0.5);
+  return f(i*kH, j*kH, 0);
 }
 
 double fin(size_t i, size_t j) {
-  return f(i*0.01, j*0.01, 1);
+  return f(i*kH, j*kH, kTime);
 }
 
 int main(int argc, char** argv) {
   MPI_Init(&argc, &argv);
-  BasicParabolic parabolic(100, 100, 0.01, 0.01, 1);
+
+  int world_size;
+  MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
+  BasicParabolic parabolic(100 / world_size, 100, kH, kH, 1);
   parabolic.SetupBorders(zero, zero, zero, zero);
 
   Timer tt;
 
   auto t = parabolic.SetupTau();
+  Print("[Basic parabolic test] ", "tau = ", t);
   parabolic.SetupInitial(init);
-  parabolic.Run(double(0.5));
-  PrintAll("[Basic parabolic test] ", "Computed L0 error at t=", 0.5 ," is ", parabolic.L0Partial(mid));
+  PrintAll("[Basic parabolic test] ", "Computed L0 debug ", parabolic.L0Partial(init));
+  PrintAll("[Basic parabolic test] ", "Computed L0 debug ", parabolic.L0Partial(fin));
+  parabolic.Run(double(kTime));
+  PrintAll("[Basic parabolic test] ", "Computed L0 error at t=", kTime ," is ", parabolic.L0Partial(fin));
 
   tt.AddMeasurment("Finished 1 task");
 
   parabolic.SetupTau(t/2);
+
   parabolic.SetupInitial(init);
-  parabolic.Run(double(0.5));
-  PrintAll("[Basic parabolic test] ", "Computed L0 error at t=", 0.5 ," is ", parabolic.L0Partial(mid));
+  parabolic.Run(double(kTime));
+  PrintAll("[Basic parabolic test] ", "Computed L0 error at t=", kTime ," is ", parabolic.L0Partial(fin));
 
   tt.AddMeasurment("Finished 2 task");
 
   parabolic.SetupTau(t/4);
   parabolic.SetupInitial(init);
-  parabolic.Run(double(0.5));
-  PrintAll("[Basic parabolic test] ", "Computed L0 error at t=", 0.5 ," is ", parabolic.L0Partial(mid));
+  parabolic.Run(double(kTime));
+  PrintAll("[Basic parabolic test] ", "Computed L0 error at t=", kTime ," is ", parabolic.L0Partial(fin));
 
   tt.AddMeasurment("Finished 3 task");
 
-  parabolic.SetupTau(t/8);
-  parabolic.SetupInitial(init);
-  parabolic.Run(double(0.5));
-  PrintAll("[Basic parabolic test] ", "Computed L0 error at t=", 0.5 ," is ", parabolic.L0Partial(mid));
-
-  tt.AddMeasurment("Finished 4 task");
   tt.Print();
 
   MPI_Finalize();
